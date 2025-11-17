@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: lain
+      POSTGRES_PASSWORD: 3322
+      POSTGRES_DB: mpv
+    ports:
+      - '8300:5432'
+    volumes:
+      - db_data_mpv:/var/lib/postgresql/data
+
+volumes:
+  db_data_mpv:

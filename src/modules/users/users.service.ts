@@ -23,8 +23,26 @@ export class UsersService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(email: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!user) {
+        throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+      }
+
+      const { passwordHash, ...userWithoutPassword } = user;
+
+      return userWithoutPassword;
+    } catch (error) {
+      console.log('/api/v1/users/:email', error);
+
+      throw new HttpException('User not found', HttpStatus.FORBIDDEN);
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

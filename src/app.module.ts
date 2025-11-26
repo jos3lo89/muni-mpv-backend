@@ -5,6 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { envValidationSchema } from './config/env.validation';
 import { PrismaModule } from './core/prisma/prisma.module';
+import { OfficesModule } from './modules/offices/offices.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './common/guards/role.guard';
 
 @Module({
   imports: [
@@ -15,6 +19,8 @@ import { PrismaModule } from './core/prisma/prisma.module';
     }),
     UsersModule,
     PrismaModule,
+    OfficesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

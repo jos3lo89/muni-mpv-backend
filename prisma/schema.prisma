@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  MESA_DE_PARTES // Recibe y deriva inicialmente
+  STAFF_OFICINA // Trabajador de unidad/oficina
+  JEFE_OFICINA // Jefe de unidad ej. Jefe de UTICS
+  GERENTE // Jefe de Oficina General o Gerencia ej. Gerente de Administración
+  SUPER_ADMIN // Rol técnico para administrar el sistema
+}
+
+enum DocumentStatus {
+  creado // Creado por el ciudadano, pendiente de Mesa de Partes
+  recibido // Recibido y validado por Mesa de Partes
+  derivado // Movido entre oficinas
+  en_revision // Una oficina lo está trabajando activamente
+  observado // Requiere corrección o info adicional
+  atendido // El trámite fue completado
+  archivado // Guardado permanentemente
+  rechazado // El trámite fue denegado
+}
+
+enum ApplicantType {
+  natural
+  juridica
+}
+
+// Tipos de documentos oficiales manejados en la municipalidad - CORREGIR
+enum DocumentType {
+  CARTA
+  DIRECTIVA
+  EXPOSICI
+  N_DE_MOTIVOS
+  INFORME
+  MEMORANDO
+  MEMORANDO_MULTIPLE
+  NOTA_DE_ELEVACI
+  OFICIO
+  OFICIO_CIRCULAR
+  OFICIO_MULTIPLE
+  AYUDA_MEMORIA
+  OTROS
+  PROVEIDO
+  N_VICEMINISTERIAL
+  RESUMEN_EJECUTIVO
+  SOBRE_CERRADO
+  SOLICITUD
+}
+
+enum OfficeType {
+  ALCALDIA
+  GERENCIA_MUNICIPAL
+  ORGANO_STAFF // Verdes -> Procuraduría, OCI, Asesoría Jurídica
+  GERENCIA_LINEA // Naranjas -> Desarrollo Urbano, Social, etc.
+  OFICINA_GENERAL // Azules -> Administración, Secretaría, Planeamiento
+  UNIDAD // Hijos -> Logística, Tesorería, UTICS, Registro Civil
+  COMITE_CONSULTIVO // Grises -> Comité de Seguridad, PVL, etc.
+}
+
+model Office {
+  id               String            @id @default(uuid())
+  name             String            @unique
+  acronym          String?
+  type             OfficeType
+  createdAt        DateTime          @default(now())
+  parentOfficeId   String?
+  parentOffice     Office?           @relation("OfficeHierarchy", fields: [parentOfficeId], references: [id])
+  subOffices       Office[]          @relation("OfficeHierarchy")
+  users            User[]
+  documentsCurrent Document[]        @relation("CurrentOfficeDocuments")
+  documentsOwned   Document[]        @relation("OwnerOfficeDocuments")
+  historyFrom      DocumentHistory[] @relation("FromOfficeHistory")
+  historyTo        DocumentHistory[] @relation("ToOfficeHistory")
+}
+
+model User {
+  id             String            @id @default(uuid())
+  email          String            @unique
+  dni            String            @unique
+  name           String
+  lastName       String
+  username       String            @unique
+  passwordHash   String
+  role           UserRole
+  isActive       Boolean           @default(true)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  officeId       String?
+  office         Office?           @relation(fields: [officeId], references: [id])
+  historyActions DocumentHistory[]
+}
+
+model Document {
+  id                  String               @id @default(uuid())
+  trackingCode        String               @unique
+  futCode             String?              @unique
+  applicantType       ApplicantType
+  applicantIdentifier String
+  applicantName       String
+  applicantLastname   String
+  applicantEmail      String
+  applicantPhone      String?
+  applicantAddress    String?
+  documentType        DocumentType
+  subject             String
+  pageCount           Int
+  currentStatus       DocumentStatus       @default(creado)
+  currentOfficeId     String
+  currentOffice       Office               @relation("CurrentOfficeDocuments", fields: [currentOfficeId], references: [id])
+  ownerOfficeId       String?
+  ownerOffice         Office?              @relation("OwnerOfficeDocuments", fields: [ownerOfficeId], references: [id])
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  attachments         DocumentAttachment[]
+  history             DocumentHistory[]
+
+  @@index([trackingCode])
+  @@index([futCode])
+  @@index([currentOfficeId])
+  @@index([ownerOfficeId])
+}
+
+model DocumentAttachment {
+  id         String   @id @default(uuid())
+  fileName   String
+  fileUrl    String
+  fileType   String
+  uploadedAt DateTime @default(now())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
+
+model DocumentHistory {
+  id             String         @id @default(uuid())
+  statusAtMoment DocumentStatus
+  observation    String?
+  timestamp      DateTime       @default(now())
+  documentId     String
+  document       Document       @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  fromOfficeId   String?
+  fromOffice     Office?        @relation("FromOfficeHistory", fields: [fromOfficeId], references: [id])
+  toOfficeId     String
+  toOffice       Office         @relation("ToOfficeHistory", fields: [toOfficeId], references: [id])
+  userId         String?
+  user           User?          @relation(fields: [userId], references: [id])
+
+  @@index([documentId])
+}

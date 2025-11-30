@@ -28,6 +28,7 @@ export type DocumentAttachmentMinAggregateOutputType = {
   id: string | null
   fileName: string | null
   fileUrl: string | null
+  fileKey: string | null
   fileType: string | null
   uploadedAt: Date | null
   documentId: string | null
@@ -37,6 +38,7 @@ export type DocumentAttachmentMaxAggregateOutputType = {
   id: string | null
   fileName: string | null
   fileUrl: string | null
+  fileKey: string | null
   fileType: string | null
   uploadedAt: Date | null
   documentId: string | null
@@ -46,6 +48,7 @@ export type DocumentAttachmentCountAggregateOutputType = {
   id: number
   fileName: number
   fileUrl: number
+  fileKey: number
   fileType: number
   uploadedAt: number
   documentId: number
@@ -57,6 +60,7 @@ export type DocumentAttachmentMinAggregateInputType = {
   id?: true
   fileName?: true
   fileUrl?: true
+  fileKey?: true
   fileType?: true
   uploadedAt?: true
   documentId?: true
@@ -66,6 +70,7 @@ export type DocumentAttachmentMaxAggregateInputType = {
   id?: true
   fileName?: true
   fileUrl?: true
+  fileKey?: true
   fileType?: true
   uploadedAt?: true
   documentId?: true
@@ -75,6 +80,7 @@ export type DocumentAttachmentCountAggregateInputType = {
   id?: true
   fileName?: true
   fileUrl?: true
+  fileKey?: true
   fileType?: true
   uploadedAt?: true
   documentId?: true
@@ -157,6 +163,7 @@ export type DocumentAttachmentGroupByOutputType = {
   id: string
   fileName: string
   fileUrl: string
+  fileKey: string
   fileType: string
   uploadedAt: Date
   documentId: string
@@ -187,6 +194,7 @@ export type DocumentAttachmentWhereInput = {
   id?: Prisma.StringFilter<"DocumentAttachment"> | string
   fileName?: Prisma.StringFilter<"DocumentAttachment"> | string
   fileUrl?: Prisma.StringFilter<"DocumentAttachment"> | string
+  fileKey?: Prisma.StringFilter<"DocumentAttachment"> | string
   fileType?: Prisma.StringFilter<"DocumentAttachment"> | string
   uploadedAt?: Prisma.DateTimeFilter<"DocumentAttachment"> | Date | string
   documentId?: Prisma.StringFilter<"DocumentAttachment"> | string
@@ -197,6 +205,7 @@ export type DocumentAttachmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
+  fileKey?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
@@ -210,6 +219,7 @@ export type DocumentAttachmentWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.DocumentAttachmentWhereInput | Prisma.DocumentAttachmentWhereInput[]
   fileName?: Prisma.StringFilter<"DocumentAttachment"> | string
   fileUrl?: Prisma.StringFilter<"DocumentAttachment"> | string
+  fileKey?: Prisma.StringFilter<"DocumentAttachment"> | string
   fileType?: Prisma.StringFilter<"DocumentAttachment"> | string
   uploadedAt?: Prisma.DateTimeFilter<"DocumentAttachment"> | Date | string
   documentId?: Prisma.StringFilter<"DocumentAttachment"> | string
@@ -220,6 +230,7 @@ export type DocumentAttachmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
+  fileKey?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
@@ -235,6 +246,7 @@ export type DocumentAttachmentScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"DocumentAttachment"> | string
   fileName?: Prisma.StringWithAggregatesFilter<"DocumentAttachment"> | string
   fileUrl?: Prisma.StringWithAggregatesFilter<"DocumentAttachment"> | string
+  fileKey?: Prisma.StringWithAggregatesFilter<"DocumentAttachment"> | string
   fileType?: Prisma.StringWithAggregatesFilter<"DocumentAttachment"> | string
   uploadedAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentAttachment"> | Date | string
   documentId?: Prisma.StringWithAggregatesFilter<"DocumentAttachment"> | string
@@ -244,6 +256,7 @@ export type DocumentAttachmentCreateInput = {
   id?: string
   fileName: string
   fileUrl: string
+  fileKey: string
   fileType: string
   uploadedAt?: Date | string
   document: Prisma.DocumentCreateNestedOneWithoutAttachmentsInput
@@ -253,6 +266,7 @@ export type DocumentAttachmentUncheckedCreateInput = {
   id?: string
   fileName: string
   fileUrl: string
+  fileKey: string
   fileType: string
   uploadedAt?: Date | string
   documentId: string
@@ -262,6 +276,7 @@ export type DocumentAttachmentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   document?: Prisma.DocumentUpdateOneRequiredWithoutAttachmentsNestedInput
@@ -271,6 +286,7 @@ export type DocumentAttachmentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -280,6 +296,7 @@ export type DocumentAttachmentCreateManyInput = {
   id?: string
   fileName: string
   fileUrl: string
+  fileKey: string
   fileType: string
   uploadedAt?: Date | string
   documentId: string
@@ -289,6 +306,7 @@ export type DocumentAttachmentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -297,6 +315,7 @@ export type DocumentAttachmentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -316,6 +335,7 @@ export type DocumentAttachmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
+  fileKey?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
@@ -325,6 +345,7 @@ export type DocumentAttachmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
+  fileKey?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
@@ -334,6 +355,7 @@ export type DocumentAttachmentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   fileName?: Prisma.SortOrder
   fileUrl?: Prisma.SortOrder
+  fileKey?: Prisma.SortOrder
   fileType?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
@@ -385,6 +407,7 @@ export type DocumentAttachmentCreateWithoutDocumentInput = {
   id?: string
   fileName: string
   fileUrl: string
+  fileKey: string
   fileType: string
   uploadedAt?: Date | string
 }
@@ -393,6 +416,7 @@ export type DocumentAttachmentUncheckedCreateWithoutDocumentInput = {
   id?: string
   fileName: string
   fileUrl: string
+  fileKey: string
   fileType: string
   uploadedAt?: Date | string
 }
@@ -430,6 +454,7 @@ export type DocumentAttachmentScalarWhereInput = {
   id?: Prisma.StringFilter<"DocumentAttachment"> | string
   fileName?: Prisma.StringFilter<"DocumentAttachment"> | string
   fileUrl?: Prisma.StringFilter<"DocumentAttachment"> | string
+  fileKey?: Prisma.StringFilter<"DocumentAttachment"> | string
   fileType?: Prisma.StringFilter<"DocumentAttachment"> | string
   uploadedAt?: Prisma.DateTimeFilter<"DocumentAttachment"> | Date | string
   documentId?: Prisma.StringFilter<"DocumentAttachment"> | string
@@ -439,6 +464,7 @@ export type DocumentAttachmentCreateManyDocumentInput = {
   id?: string
   fileName: string
   fileUrl: string
+  fileKey: string
   fileType: string
   uploadedAt?: Date | string
 }
@@ -447,6 +473,7 @@ export type DocumentAttachmentUpdateWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -455,6 +482,7 @@ export type DocumentAttachmentUncheckedUpdateWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -463,6 +491,7 @@ export type DocumentAttachmentUncheckedUpdateManyWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fileName?: Prisma.StringFieldUpdateOperationsInput | string
   fileUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -473,6 +502,7 @@ export type DocumentAttachmentSelect<ExtArgs extends runtime.Types.Extensions.In
   id?: boolean
   fileName?: boolean
   fileUrl?: boolean
+  fileKey?: boolean
   fileType?: boolean
   uploadedAt?: boolean
   documentId?: boolean
@@ -483,6 +513,7 @@ export type DocumentAttachmentSelectCreateManyAndReturn<ExtArgs extends runtime.
   id?: boolean
   fileName?: boolean
   fileUrl?: boolean
+  fileKey?: boolean
   fileType?: boolean
   uploadedAt?: boolean
   documentId?: boolean
@@ -493,6 +524,7 @@ export type DocumentAttachmentSelectUpdateManyAndReturn<ExtArgs extends runtime.
   id?: boolean
   fileName?: boolean
   fileUrl?: boolean
+  fileKey?: boolean
   fileType?: boolean
   uploadedAt?: boolean
   documentId?: boolean
@@ -503,12 +535,13 @@ export type DocumentAttachmentSelectScalar = {
   id?: boolean
   fileName?: boolean
   fileUrl?: boolean
+  fileKey?: boolean
   fileType?: boolean
   uploadedAt?: boolean
   documentId?: boolean
 }
 
-export type DocumentAttachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fileName" | "fileUrl" | "fileType" | "uploadedAt" | "documentId", ExtArgs["result"]["documentAttachment"]>
+export type DocumentAttachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fileName" | "fileUrl" | "fileKey" | "fileType" | "uploadedAt" | "documentId", ExtArgs["result"]["documentAttachment"]>
 export type DocumentAttachmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
 }
@@ -528,6 +561,7 @@ export type $DocumentAttachmentPayload<ExtArgs extends runtime.Types.Extensions.
     id: string
     fileName: string
     fileUrl: string
+    fileKey: string
     fileType: string
     uploadedAt: Date
     documentId: string
@@ -958,6 +992,7 @@ export interface DocumentAttachmentFieldRefs {
   readonly id: Prisma.FieldRef<"DocumentAttachment", 'String'>
   readonly fileName: Prisma.FieldRef<"DocumentAttachment", 'String'>
   readonly fileUrl: Prisma.FieldRef<"DocumentAttachment", 'String'>
+  readonly fileKey: Prisma.FieldRef<"DocumentAttachment", 'String'>
   readonly fileType: Prisma.FieldRef<"DocumentAttachment", 'String'>
   readonly uploadedAt: Prisma.FieldRef<"DocumentAttachment", 'DateTime'>
   readonly documentId: Prisma.FieldRef<"DocumentAttachment", 'String'>

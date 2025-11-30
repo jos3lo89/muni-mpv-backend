@@ -875,6 +875,7 @@ export const DocumentAttachmentScalarFieldEnum = {
   id: 'id',
   fileName: 'fileName',
   fileUrl: 'fileUrl',
+  fileKey: 'fileKey',
   fileType: 'fileType',
   uploadedAt: 'uploadedAt',
   documentId: 'documentId'

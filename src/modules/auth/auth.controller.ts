@@ -40,4 +40,17 @@ export class AuthController {
 
     return userWithoutPassword;
   }
+
+  @Post('signout')
+  @HttpCode(HttpStatus.OK)
+  signOut(@Res({ passthrough: true }) res: Response) {
+    const isProduction = this.config.get<string>('NODE_ENV') === 'production';
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'strict' : 'lax',
+    });
+
+    return { message: 'Sesión cerrada correctamente' };
+  }
 }

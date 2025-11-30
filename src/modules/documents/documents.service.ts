@@ -13,6 +13,7 @@ import { UserActiveI } from 'src/common/interfaces/userActive.interface';
 import { DocumentStatus } from 'src/generated/prisma/enums';
 import { generateTrackingCode } from 'src/common/utils/code-generator.util';
 import { MailService } from 'src/providers/mail/mail.service';
+import { RejectDocumentDto } from './dto/update-document-status.dto';
 
 @Injectable()
 export class DocumentsService {
@@ -188,5 +189,122 @@ export class DocumentsService {
         'Error al registrar el documento en base de datos',
       );
     }
+  }
+
+  async findAllPending() {
+    return this.prisma.document.findMany({
+      where: {
+        currentStatus: DocumentStatus.creado,
+      },
+      include: {
+        attachments: true,
+        history: {
+          orderBy: { timestamp: 'desc' },
+          take: 1,
+        },
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+  }
+
+  async approveDocument(id: string, user: UserActiveI) {
+    const userFound = await this.prisma.user.findUnique({
+      where: { id: user.userId },
+      include: { office: { select: { id: true } } },
+    });
+
+    if (!userFound) {
+      throw new BadRequestException('El usuario no existe.');
+    }
+
+    const { office } = userFound;
+
+    if (!office) {
+      throw new BadRequestException(
+        'El usuario no pertenece a ninguna oficina.',
+      );
+    }
+
+    const doc = await this.prisma.document.findUnique({ where: { id } });
+
+    if (!doc || doc.currentStatus !== DocumentStatus.creado) {
+      throw new BadRequestException(
+        'El documento no existe o ya fue procesado.',
+      );
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      const updatedDoc = await tx.document.update({
+        where: { id },
+        data: {
+          currentStatus: DocumentStatus.recibido, // [cite: 4] Pasa a estado oficial
+          // Opcional: Podrías asignar aquí un número de expediente interno si la muni lo usa
+        },
+      });
+
+      // B. Historial de Aprobación
+      await tx.documentHistory.create({
+        data: {
+          statusAtMoment: DocumentStatus.recibido,
+          observation: 'Documento Validado y Recepcionado conforme.',
+          documentId: id,
+          fromOfficeId: office.id,
+          toOfficeId: office.id,
+          userId: user.userId,
+        },
+      });
+
+      return updatedDoc;
+    });
+  }
+
+  async rejectDocument(id: string, dto: RejectDocumentDto, user: UserActiveI) {
+    const userFound = await this.prisma.user.findUnique({
+      where: { id: user.userId },
+      include: { office: { select: { id: true } } },
+    });
+
+    if (!userFound) {
+      throw new BadRequestException('El usuario no existe.');
+    }
+
+    const { office } = userFound;
+
+    if (!office) {
+      throw new BadRequestException(
+        'El usuario no pertenece a ninguna oficina.',
+      );
+    }
+    const doc = await this.prisma.document.findUnique({ where: { id } });
+
+    if (!doc || doc.currentStatus !== DocumentStatus.creado) {
+      throw new BadRequestException(
+        'El documento no existe o ya fue procesado.',
+      );
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      const updatedDoc = await tx.document.update({
+        where: { id },
+        data: {
+          currentStatus: DocumentStatus.rechazado,
+        },
+      });
+
+      await tx.documentHistory.create({
+        data: {
+          statusAtMoment: DocumentStatus.rechazado,
+          observation: `RECHAZADO: ${dto.observation}`,
+          documentId: id,
+          fromOfficeId: office.id,
+          toOfficeId: office.id,
+          userId: user.userId,
+        },
+      });
+
+      return updatedDoc;
+    });
   }
 }

@@ -137,6 +137,7 @@ model DocumentAttachment {
   id         String   @id @default(uuid())
   fileName   String
   fileUrl    String
+  fileKey    String
   fileType   String
   uploadedAt DateTime @default(now())
   documentId String
